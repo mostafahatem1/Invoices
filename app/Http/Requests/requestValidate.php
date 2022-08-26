@@ -25,7 +25,7 @@ class requestValidate extends FormRequest
     {
         return [
             'section_name' => 'required|unique:sections|max:255',
-            'Product_name' => 'required|unique:products|max:255'
+
         ];
     }
     public function messages()
@@ -33,8 +33,7 @@ class requestValidate extends FormRequest
         return [
             'section_name.required' =>'يرجي ادخال اسم القسم',
             'section_name.unique' =>'اسم القسم مسجل مسبقا',
-            'Product_name.required' =>'يرجي ادخال اسم المنتج',
-            'Product_name.unique' =>'اسم المنتج مسجل مسبقا',
+
         ];
     }
 

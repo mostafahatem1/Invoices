@@ -47,68 +47,34 @@
         </div>
     @endif
 
+    <!-- عرض edit -->
+    @if (session()->has('edit'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session()->get('edit') }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    <!-- عرض delete -->
+    @if (session()->has('delete'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{ session()->get('delete') }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 				<!-- row -->
-{{--				<div class="row">--}}
-{{--                    <div class="col-xl-12">--}}
-{{--                        <div class="card mg-b-20">--}}
-{{--                            <div class="card-header pb-0">--}}
-{{--                                <div class="d-flex justify-content-between">--}}
-{{--                                    <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">اضافه المنتج</a>--}}
-{{--                                </div>--}}
-
-{{--                            </div>--}}
-{{--                            <div class="card-body">--}}
-{{--                                <div class="table-responsive">--}}
-{{--                                    <table id="example1" class="table key-buttons text-md-nowrap">--}}
-{{--                                        <thead>--}}
-{{--                                        <tr>--}}
-{{--                                            <th class="border-bottom-0">#</th>--}}
-{{--                                            <th class="border-bottom-0">اسم القسم</th>--}}
-{{--                                            <th class="border-bottom-0">الوصف</th>--}}
-{{--                                            <th class="border-bottom-0">العمليات</th>--}}
-
-{{--                                        </tr>--}}
-{{--                                        </thead>--}}
-{{--                                        <tbody>--}}
-{{--                                        <?php $i=0; ?>--}}
-{{--                                        @foreach($products as $product)--}}
-{{--                                            <?php $i++; ?>--}}
-{{--                                            <tr>--}}
-{{--                                                <td>{{$i}}</td>--}}
-{{--                                                <td>{{$product->Product_name}}</td>--}}
-{{--                                                <td>{{$product->description}}</td>--}}
-{{--                                                <td>--}}
-{{--                                                    <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"--}}
-{{--                                                       data-id="{{ $product->id }}" data-Product_name="{{ $product->Product_name }}"--}}
-{{--                                                       data-description="{{ $product->description }}" data-toggle="modal"--}}
-{{--                                                       href="#exampleModal2" title="تعديل"><i class="las la-pen"></i>--}}
-{{--                                                    </a>--}}
-
-{{--                                                    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"--}}
-{{--                                                       data-id="{{ $product->id }}" data-Product_name="{{ $product->Product_name }}"--}}
-{{--                                                       data-toggle="modal" href="#modaldemo9" title="حذف"><i--}}
-{{--                                                            class="las la-trash"></i>--}}
-{{--                                                    </a>--}}
-{{--                                                </td>--}}
-{{--                                            </tr>--}}
-{{--                                        @endforeach--}}
-
-{{--                                        </tbody>--}}
-{{--                                    </table>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--				</div>--}}
-
-
 
                 <div class="col-xl-12">
                     <div class="card mg-b-20">
                         <div class="card-header pb-0">
+                          @can('اضافة منتج')
                             <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale"
                                data-toggle="modal" href="#exampleModal">اضافة منتج</a>
-
+                          @endcan
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -133,17 +99,19 @@
                                             <td>{{$product->section->section_name}}</td>
                                             <td>{{$product->description}}</td>
                                             <td>
-
+                                               @can('تعديل منتج')
                                                     <button class="btn btn-outline-success btn-sm"
                                                             data-name="{{ $product->Product_name }}" data-pro_id="{{ $product->id }}"
                                                             data-section_name="{{ $product->section->section_name }}"
                                                             data-description="{{ $product->description }}" data-toggle="modal"
                                                             data-target="#edit_Product">تعديل</button>
+                                                @endcan
 
-
+                                                @can('حذف منتج')
                                                     <button class="btn btn-outline-danger btn-sm " data-pro_id="{{ $product->id }}"
                                                             data-product_name="{{ $product->Product_name }}" data-toggle="modal"
                                                             data-target="#modaldemo9">حذف</button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -198,7 +166,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Basic modal -->
 
                 <!-- edit -->
                 <div class="modal fade" id="edit_Product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -258,8 +225,8 @@
                                 {{ csrf_field() }}
                                 <div class="modal-body">
                                     <p>هل انت متاكد من عملية الحذف ؟</p><br>
-                                    <input type="hidden" name="id" id="id" value="">
-                                    <input class="form-control" name="Product_name" id="section_name" type="text" readonly>
+                                    <input type="hidden" name="pro_id" id="pro_id" value="">
+                                    <input class="form-control" name="product_name" id="product_name" type="text" readonly>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>

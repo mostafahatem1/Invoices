@@ -39,11 +39,11 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //        $validatedData = $request->validate([
-//            'section_name' => 'required|unique:sections|max:255',
+//                $validatedData = $request->validate([
+//                  'Product_name' => 'required|unique:products|max:255',
 //        ],[
-//            'section_name.required' =>'يرجي ادخال اسم القسم',
-//            'section_name.unique' =>'اسم القسم مسجل مسبقا',
+//                    'Product_name.required' =>'يرجي ادخال اسم المنتج',
+//                    'Product_name.unique' =>'اسم المنتج مسجل مسبقا',
 //        ]);
 
         products::create([
@@ -86,10 +86,22 @@ class ProductsController extends Controller
      * @param  \App\products  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, products $products)
+    public function update(Request $request)
     {
-        //
+        $id = sections::where('section_name', $request->section_name)->first()->id;
+
+        $Products = Products::findOrFail($request->pro_id);
+
+        $Products->update([
+            'Product_name' => $request->Product_name,
+            'description' => $request->description,
+            'section_id' => $id,
+        ]);
+
+        session()->flash('edit', 'تم تعديل المنتج بنجاح');
+        return back();
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -97,8 +109,11 @@ class ProductsController extends Controller
      * @param  \App\products  $products
      * @return \Illuminate\Http\Response
      */
-    public function destroy(products $products)
+    public function destroy(Request $request)
     {
-        //
+        $Products = Products::findOrFail($request->pro_id);
+        $Products->delete();
+        session()->flash('delete', 'تم حذف المنتج بنجاح');
+        return back();
     }
 }
